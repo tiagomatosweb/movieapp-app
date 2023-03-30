@@ -2,12 +2,12 @@
   <h3>Meus favoritos</h3>
 
   <MovieCard
-    v-for="movie in favorite"
+    v-for="movie in movies"
     :key="movie.id"
     :movie="movie"
   />
-
-  <div v-if="!favorite.length">
+<!---->
+  <div v-if="!movies.length">
     Você não tem nenhum filme favorito.
   </div>
 </template>
@@ -16,5 +16,7 @@
 import { useMovie } from '@/composables/useMovie';
 import MovieCard from '@/components/MovieCard.vue';
 
-const { favorite } = useMovie()
+defineProps({
+  movies: Array
+})
 </script>

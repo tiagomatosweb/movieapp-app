@@ -1,18 +1,18 @@
 <template>
   <v-card class="border">
     <v-card-text>
-      <h2>{{ movie.name }}</h2>
-      <p>{{ movie.description }}</p>
-      <div>{{ movie.duration }}</div>
+      <h2>{{ localMovie.name }}</h2>
+      <p>{{ localMovie.description }}</p>
+      <div>{{ localMovie.duration }}</div>
     </v-card-text>
 
     <v-card-actions v-if="!hideHeart">
       <v-spacer />
       <v-btn
-        :color="inFavorite(movie.id) ? 'red' : 'white'"
+        :color="localMovie.is_favorite ? 'red' : 'white'"
         icon="mdi-heart"
         size="small"
-        @click="addOrRemove(movie)"
+        @click="addOrRemove(localMovie)"
       />
     </v-card-actions>
   </v-card>
@@ -20,13 +20,16 @@
 
 <script setup>
 import { useMovie } from '@/composables/useMovie';
+import { ref } from 'vue';
 
 const props = defineProps({
   movie: Object,
   hideHeart: Boolean
 })
 
-const { add, remove, inFavorite, addOrRemove } = useMovie()
+const localMovie = ref(props.movie)
+
+const { addOrRemove } = useMovie()
 </script>
 
 

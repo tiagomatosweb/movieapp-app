@@ -6,7 +6,7 @@
       location="right"
     >
       <div class="pa-4">
-        <MyFavorite />
+        <MyFavorite :movies="favorites" />
       </div>
     </v-navigation-drawer>
 
@@ -35,13 +35,10 @@
 <script setup>
   import axios from 'axios';
   import { useAsyncState } from '@vueuse/core'
-  import { ref } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import MyFavorite from '@/components/MyFavorite.vue';
   import { useMovie } from '@/composables/useMovie';
   import MovieCard from '@/components/MovieCard.vue';
-
-  const { favorite, add: addMovieToFavorite } = useMovie()
-
 
   const isFavoriteOpen = ref(false)
 
@@ -51,8 +48,13 @@
     {},
   )
 
+  const favorites = computed(() => {
+    if (!movies.value?.data) {
+      return [];
+    }
 
-
+    return movies.value.data.filter(o => o.is_favorite)
+  })
 
 
 
