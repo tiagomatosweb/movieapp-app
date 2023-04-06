@@ -6,7 +6,7 @@
       location="right"
     >
       <div class="pa-4">
-        <MyFavorite :movies="favorites" />
+        <MyFavorite :movies="storeMovies.favorites" />
       </div>
     </v-navigation-drawer>
 
@@ -18,7 +18,7 @@
       <v-container>
         <v-row>
           <v-col
-            v-for="movie in movies.data"
+            v-for="movie in storeMovies?.movies?.data"
             :key="movie.id"
             cols="12"
             md="6"
@@ -37,24 +37,17 @@
   import { useAsyncState } from '@vueuse/core'
   import { computed, ref, watch } from 'vue';
   import MyFavorite from '@/components/MyFavorite.vue';
-  import { useMovie } from '@/composables/useMovie';
   import MovieCard from '@/components/MovieCard.vue';
-
+  import { useMovie } from '@/store/useMovie'
   const isFavoriteOpen = ref(false)
 
-  const { state: movies, isReady, isLoading } = useAsyncState(
-    axios
-      .get('http://localhost:8000/api/movies').then(r => r.data),
-    {},
-  )
+  const storeMovies = useMovie()
+  storeMovies.getMovies()
 
-  const favorites = computed(() => {
-    if (!movies.value?.data) {
-      return [];
-    }
 
-    return movies.value.data.filter(o => o.is_favorite)
-  })
+
+
+
 
 
 
